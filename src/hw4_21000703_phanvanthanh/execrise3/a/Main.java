@@ -1,0 +1,12 @@
+package hw4_21000703_phanvanthanh.execrise3.a;
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String expression = sc.nextLine() ;
+        BacketExpressions backetExpressions = new BacketExpressions(expression);
+        System.out.println(backetExpressions.isvalid());
+    }
+}

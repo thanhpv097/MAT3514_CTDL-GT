@@ -32,7 +32,14 @@ public class LinkedListStack<E> implements StackInterface<E>{
     @Override
     public E top() {
         if(isEmpty()) throw new IllegalStateException("Stack is empty");
-        return stack.element;
+        if(isEmpty()) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        } else {
+            E data = stack.element;
+            stack = stack.next;
+            size--;
+            return data;
+        }
     }
     @Override
     public boolean isEmpty() {

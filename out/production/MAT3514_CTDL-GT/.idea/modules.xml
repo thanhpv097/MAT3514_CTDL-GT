@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/MAT3514_CTDL-GT.iml" filepath="$PROJECT_DIR$/.idea/MAT3514_CTDL-GT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hw2_21000703_Phanvanthanh/hw2_21000703_PhanVanThanh.iml" filepath="$PROJECT_DIR$/hw2_21000703_Phanvanthanh/hw2_21000703_PhanVanThanh.iml" />
+    </modules>
+  </component>
+</project>
