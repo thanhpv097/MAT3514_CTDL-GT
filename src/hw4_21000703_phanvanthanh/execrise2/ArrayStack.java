@@ -30,7 +30,7 @@ public class ArrayStack<E> implements StackInterface<E> {
         return stack[size];
     }
     public E pop() {
-        if(isEmpty()) throw new IllegalStateException("Queue is empty");
+        if(isEmpty()) throw new IllegalStateException("Stack is empty");
         E answer = stack[size];
         stack[size] = null;
         size--;

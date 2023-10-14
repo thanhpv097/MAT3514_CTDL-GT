@@ -1,4 +1,4 @@
-package hw2_21000703_phanvanthanh .execrise2;
+package hw2_21000703_phanvanthanh.execrise2;
 
 import java.lang.reflect.Array;
 
