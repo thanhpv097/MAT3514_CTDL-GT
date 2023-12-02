@@ -1,7 +1,7 @@
 package hw5_21000703_phanvanthanh.execrise1;
 
 public class LinkedBinaryTree<E,T> implements BinaryTreeInterface<T>{
-    protected static class Node <E> {
+    class Node <E> {
         public E element;
         private Node<E> parent;
         public Node<E> left;

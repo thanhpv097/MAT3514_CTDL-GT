@@ -1,0 +1,9 @@
+I. Bài 1:
+    - Thuật toán được chọn:
+        + SortedArray: sử dụng binarySearch
+        + UnSortedArray, UnSortedList, SortedList: sử dụng sequantialSearch
+    - Input: Kiểu generic
+II. Bài 2:
+    - Thuật toán được chọn:
+        + BinarySearch, sequantialSearch, BinarySearchTree
+    - Input: kiểu int

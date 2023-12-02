@@ -1,0 +1,6 @@
+I.  Bài 5:
+    + Thuật toán được chọn: hàng đợi ưu tiên, đưa chỉ số ưu tiên min lên cuối mảng, xóa phân tử nhỏ nhất là xóa phần tử cuối mảng
+    + Định dạng Input: đầu vào dạng Integer, String
+II. Bài 6:
+    + Thuật toán được chọn: Thuật toán vun đống lên khi được thêm phần tử mới vào, Thuật toán vun đống xuống khi loại bỏ phần tử nhỏ nhất ra
+    +Định dạng Input: Đầu vào dạng Integer, String
