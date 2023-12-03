@@ -1,5 +1,6 @@
 package project_21000703_phanvanthanh.model;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class TruongDH {
@@ -48,5 +49,14 @@ public class TruongDH {
         TruongDH other = (TruongDH) obj;
         return Objects.equals(diaChi, other.diaChi) && Objects.equals(maTruong, other.maTruong)
                 && Objects.equals(tenTruong, other.tenTruong);
+    }
+    public static String getTruongTheoTen(String tenTruong) {
+        return tenTruong;
+    }
+    public static String getTruongTheoMa(String maTruong) {
+        return maTruong;
+    }
+    public static String getTruongTheoDC(String diaChi) {
+        return diaChi;
     }
 }

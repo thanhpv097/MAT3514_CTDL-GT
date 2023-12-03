@@ -1,6 +1,9 @@
 package project_21000703_phanvanthanh.view;
 
+import project_21000703_phanvanthanh.controller.QLTController;
+import project_21000703_phanvanthanh.model.NganhHoc;
 import project_21000703_phanvanthanh.model.QLTModel;
+import project_21000703_phanvanthanh.model.TruongDH;
 
 import java.awt.EventQueue;
 
@@ -11,8 +14,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import java.awt.Font;
+
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -23,22 +29,24 @@ import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class QLTView extends JFrame {
-
-    private JPanel contentPane;
-    QLTModel model;
-    private JTextField textField_1;
-    private JTable table;
-    private JTextField textField_ID;
-    private JTextField textField_TenNganh;
-    private JTextField textField;
-    private JTextField textField_2;
-    private JTextField textField_3;
-    private JTextField textField_4;
-    private JTextField textField_5;
+    public JComboBox comboBox_TenTruongTimKiem ;
+    public JPanel contentPane;
+    public QLTModel model;
+    public JTextField textField_MaNganhDaChon;
+    public JTable table;
+    public JTextField textField_MaNganh;
+    public JTextField textField_TenNganh;
+    public JTextField textField_MaTruong;
+    public JTextField textField_DiemChuan;
+    public JTextField textField_DiaChi;
+    public JTextField textField_HocPhi;
+    public JTextField textField_TenTruong;
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -59,6 +67,9 @@ public class QLTView extends JFrame {
         this.model = new QLTModel();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 999, 683);
+
+        Action action = new QLTController(this);
+
         contentPane = new JPanel();
         contentPane.setForeground(Color.WHITE);
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -104,29 +115,35 @@ public class QLTView extends JFrame {
 
         JLabel lable_MaNganh = new JLabel("Mã Ngành");
         lable_MaNganh.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        lable_MaNganh.setBounds(427, 57, 78, 34);
+        lable_MaNganh.setBounds(390, 57, 78, 34);
         contentPane.add(lable_MaNganh);
 
-        textField_1 = new JTextField();
-        textField_1.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        textField_1.setBounds(530, 57, 188, 35);
-        contentPane.add(textField_1);
-        textField_1.setColumns(10);
+        textField_MaNganhDaChon = new JTextField();
+        textField_MaNganhDaChon.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        textField_MaNganhDaChon.setBounds(508, 57, 158, 35);
+        contentPane.add(textField_MaNganhDaChon);
+        textField_MaNganhDaChon.setColumns(10);
 
         JButton button_TimKiem = new JButton("Tìm Kiếm");
+        button_TimKiem.addActionListener(action);
         button_TimKiem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             }
         });
         button_TimKiem.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        button_TimKiem.setBounds(769, 57, 118, 35);
+        button_TimKiem.setBounds(702, 57, 118, 35);
         contentPane.add(button_TimKiem);
 
-        JComboBox comboBox = new JComboBox();
-        comboBox.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        comboBox.setForeground(Color.WHITE);
-        comboBox.setBounds(109, 58, 267, 34);
-        contentPane.add(comboBox);
+        comboBox_TenTruongTimKiem = new JComboBox();
+        comboBox_TenTruongTimKiem.addItem("");
+        for(NganhHoc nganh : this.model.getDsNganhHoc()) {
+            comboBox_TenTruongTimKiem.addItem(nganh.getTruong().getTenTruong());
+        }
+        comboBox_TenTruongTimKiem.setForeground(Color.GRAY);
+        comboBox_TenTruongTimKiem.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        contentPane.add(comboBox_TenTruongTimKiem);
+        comboBox_TenTruongTimKiem.setBounds(109, 58, 245, 34);
+        this.setVisible(true);
 
         Component horizontalStrut = Box.createHorizontalStrut(20);
         horizontalStrut.setBackground(Color.BLACK);
@@ -142,18 +159,9 @@ public class QLTView extends JFrame {
         table.setFont(new Font("Tahoma", Font.PLAIN, 17));
         table.setModel(new DefaultTableModel(
                 new Object[][] {
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
                 },
                 new String[] {
-                        "STT", "M\u00E3 Ng\u00E0nh", "T\u00EAn Ng\u00E0nh", "\u0110i\u1EC3m chu\u1EA9n", "T\u00EAn Tr\u01B0\u1EDDng", "M\u00E3 Tr\u01B0\u1EDDng", "\u0110\u1ECBa Ch\u1EC9", "H\u1ECDc Ph\u00ED"
+                        "M\u00E3 Ng\u00E0nh", "T\u00EAn Ng\u00E0nh", "\u0110i\u1EC3m chu\u1EA9n", "M\u00E3 Tr\u01B0\u1EDDng", "T\u00EAn Tr\u01B0\u1EDDng", "\u0110\u1ECBa Ch\u1EC9", "H\u1ECDc Ph\u00ED"
                 }
         ));
 
@@ -176,11 +184,11 @@ public class QLTView extends JFrame {
         lable_MaNganh_1.setBounds(20, 417, 95, 34);
         contentPane.add(lable_MaNganh_1);
 
-        textField_ID = new JTextField();
-        textField_ID.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        textField_ID.setColumns(10);
-        textField_ID.setBounds(144, 416, 232, 35);
-        contentPane.add(textField_ID);
+        textField_MaNganh = new JTextField();
+        textField_MaNganh.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        textField_MaNganh.setColumns(10);
+        textField_MaNganh.setBounds(144, 416, 232, 35);
+        contentPane.add(textField_MaNganh);
 
         JLabel lable_TenNganh = new JLabel("Tên Ngành");
         lable_TenNganh.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -203,28 +211,22 @@ public class QLTView extends JFrame {
         lable_TenTruong_1_1.setBounds(20, 557, 95, 34);
         contentPane.add(lable_TenTruong_1_1);
 
-        textField = new JTextField();
-        textField.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        textField.setColumns(10);
-        textField.setBounds(144, 506, 232, 35);
-        contentPane.add(textField);
-
-        textField_2 = new JTextField();
-        textField_2.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        textField_2.setColumns(10);
-        textField_2.setBounds(144, 560, 232, 35);
-        contentPane.add(textField_2);
+        textField_MaTruong = new JTextField();
+        textField_MaTruong.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        textField_MaTruong.setColumns(10);
+        textField_MaTruong.setBounds(144, 506, 232, 35);
+        contentPane.add(textField_MaTruong);
 
         JLabel lable_DiemChuan = new JLabel("Điểm chuẩn");
         lable_DiemChuan.setFont(new Font("Tahoma", Font.PLAIN, 17));
         lable_DiemChuan.setBounds(481, 416, 95, 34);
         contentPane.add(lable_DiemChuan);
 
-        textField_3 = new JTextField();
-        textField_3.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        textField_3.setColumns(10);
-        textField_3.setBounds(604, 415, 232, 35);
-        contentPane.add(textField_3);
+        textField_DiemChuan = new JTextField();
+        textField_DiemChuan.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        textField_DiemChuan.setColumns(10);
+        textField_DiemChuan.setBounds(604, 415, 232, 35);
+        contentPane.add(textField_DiemChuan);
 
         JLabel lable_DiaChi = new JLabel("Địa Chỉ");
         lable_DiaChi.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -236,65 +238,194 @@ public class QLTView extends JFrame {
         lable_HocPhi.setBounds(481, 510, 95, 34);
         contentPane.add(lable_HocPhi);
 
-        textField_4 = new JTextField();
-        textField_4.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        textField_4.setColumns(10);
-        textField_4.setBounds(604, 461, 232, 35);
-        contentPane.add(textField_4);
+        textField_DiaChi = new JTextField();
+        textField_DiaChi.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        textField_DiaChi.setColumns(10);
+        textField_DiaChi.setBounds(604, 461, 232, 35);
+        contentPane.add(textField_DiaChi);
 
-        textField_5 = new JTextField();
-        textField_5.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        textField_5.setColumns(10);
-        textField_5.setBounds(604, 506, 232, 35);
-        contentPane.add(textField_5);
+        textField_HocPhi = new JTextField();
+        textField_HocPhi.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        textField_HocPhi.setColumns(10);
+        textField_HocPhi.setBounds(604, 506, 232, 35);
+        contentPane.add(textField_HocPhi);
 
         JButton button_Them = new JButton("Thêm");
+        button_Them.addActionListener(action);
         button_Them.setFont(new Font("Tahoma", Font.PLAIN, 17));
         button_Them.setBounds(23, 603, 118, 35);
         contentPane.add(button_Them);
 
         JButton button_Xoa = new JButton("Xóa");
-        button_Xoa.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
+        button_Xoa.addActionListener(action);
         button_Xoa.setFont(new Font("Tahoma", Font.PLAIN, 17));
         button_Xoa.setBounds(219, 603, 118, 35);
         contentPane.add(button_Xoa);
 
         JButton button_CapNhat = new JButton("Cập Nhật");
-        button_CapNhat.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
+        button_CapNhat.addActionListener(action);
         button_CapNhat.setFont(new Font("Tahoma", Font.PLAIN, 17));
         button_CapNhat.setBounds(408, 603, 118, 35);
         contentPane.add(button_CapNhat);
 
         JButton button_HuyBo = new JButton("Hủy Bỏ");
-        button_HuyBo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
+        button_HuyBo.addActionListener(action);
         button_HuyBo.setFont(new Font("Tahoma", Font.PLAIN, 17));
         button_HuyBo.setBounds(812, 603, 118, 35);
         contentPane.add(button_HuyBo);
 
         JButton button_SapXepTheoDiem = new JButton("Sắp Xếp Theo Điểm");
         button_SapXepTheoDiem.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        button_SapXepTheoDiem.setBounds(221, 121, 181, 35);
+        button_SapXepTheoDiem.setBounds(221, 121, 220, 35);
         contentPane.add(button_SapXepTheoDiem);
 
         JButton button_SapXepTheoDiem_1 = new JButton("Sắp Xếp Theo Học Phí\r\n");
         button_SapXepTheoDiem_1.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        button_SapXepTheoDiem_1.setBounds(494, 120, 199, 35);
+        button_SapXepTheoDiem_1.setBounds(494, 120, 224, 35);
         contentPane.add(button_SapXepTheoDiem_1);
 
         JButton button_Luu = new JButton("Lưu");
+        button_Luu.addActionListener(action);
         button_Luu.setFont(new Font("Tahoma", Font.PLAIN, 17));
         button_Luu.setBounds(617, 603, 118, 35);
         contentPane.add(button_Luu);
-        this.setVisible(true);
+
+        textField_TenTruong = new JTextField();
+        textField_TenTruong.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        textField_TenTruong.setColumns(10);
+        textField_TenTruong.setBounds(144, 557, 232, 35);
+        contentPane.add(textField_TenTruong);
+
+        JButton button_HuyTimKiem = new JButton("Hủy Tìm Kiếm");
+        button_HuyTimKiem.addActionListener(action);
+        button_HuyTimKiem.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        button_HuyTimKiem.setBounds(838, 57, 137, 35);
+        contentPane.add(button_HuyTimKiem);
+    }
+    public void xoaFrom() {
+        textField_MaNganh.setText("");
+        textField_TenNganh.setText("");
+        textField_MaTruong.setText("");
+        textField_DiaChi.setText("");
+        textField_DiemChuan.setText("");
+        textField_TenTruong.setText("");
+        textField_HocPhi.setText("");
+    }
+
+    public void themHoacCapNhatNganhHoc(NganhHoc nganh) {
+        DefaultTableModel modelTable = (DefaultTableModel) table.getModel();
+        if(!this.model.kiemTraTonTai(nganh)) {
+            this.model.insert(nganh);
+            modelTable.addRow(new Object[] {
+                    nganh.getMaNganh(),
+                    nganh.getTenNganh(),
+                    nganh.getDiemChuan() + "",
+                    nganh.getTruong().getMaTruong() + "",
+                    nganh.getTruong().getTenTruong() + "",
+                    nganh.getTruong().getDiaChi() + "",
+                    nganh.getHocPhi() + ""});
+        } else {
+            this.model.update(nganh);
+            int soLuongDong = modelTable.getRowCount();
+            for(int i = 0; i < soLuongDong; i++) {
+                String maNganh = modelTable.getValueAt(i, 0) + "";
+                if(maNganh.equals(nganh.getMaNganh() + "")) {
+                    modelTable.setValueAt(nganh.getMaNganh() + "", i, 0);
+                    modelTable.setValueAt(nganh.getTenNganh() + "", i, 1);
+                    modelTable.setValueAt(nganh.getDiemChuan() + "", i, 2);
+                    modelTable.setValueAt(nganh.getTruong().getMaTruong() + "", i, 3);
+                    modelTable.setValueAt(nganh.getTruong().getTenTruong() + "", i, 4);
+                    modelTable.setValueAt(nganh.getTruong().getDiaChi() + "", i, 5);
+                    modelTable.setValueAt(nganh.getHocPhi() + "", i, 6);
+
+                }
+            }
+
+        }
+    }
+    public NganhHoc getNganhHocDangChon() {
+        DefaultTableModel modelTable = (DefaultTableModel) table.getModel();
+        int indexRow = table.getSelectedRow();
+
+        String maNganh = modelTable.getValueAt(indexRow, 0) + "";
+        String tenNganh = modelTable.getValueAt(indexRow, 1) + "";
+        double diemChuan = Double.valueOf(modelTable.getValueAt(indexRow, 2) + "");
+        String maTruong = TruongDH.getTruongTheoMa(modelTable.getValueAt(indexRow, 3) + "");
+        String tenTruong = TruongDH.getTruongTheoTen(modelTable.getValueAt(indexRow, 4) + "");
+        String diaChi = TruongDH.getTruongTheoDC(modelTable.getValueAt(indexRow, 5) + "");
+        long hocPhi = Long.valueOf((String) modelTable.getValueAt(indexRow, 6));
+        TruongDH truong = new TruongDH(maTruong, tenTruong, diaChi);
+        NganhHoc nganh = new NganhHoc(maNganh, tenNganh, truong, hocPhi, diemChuan);
+        return nganh;
+    }
+    public void hienThiThongTinNganhDaChon() {
+        NganhHoc nganh = getNganhHocDangChon();
+
+        this.textField_MaNganh.setText(nganh.getMaNganh());
+        this.textField_TenNganh.setText(nganh.getTenNganh());
+        this.textField_DiemChuan.setText(nganh.getDiemChuan() + "");
+        this.textField_MaTruong.setText(nganh.getTruong().getMaTruong());
+        this.textField_TenTruong.setText(nganh.getTruong().getTenTruong() + "");
+        this.textField_DiaChi.setText(nganh.getTruong().getDiaChi() + "");
+        this.textField_HocPhi.setText(nganh.getHocPhi() + "");
+    }
+
+    public void thucHienXoa() {
+        DefaultTableModel modelTable = (DefaultTableModel) table.getModel();
+        int indexRow = table.getSelectedRow();
+        int luaChon = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn xóa không ?");
+        if(luaChon == JOptionPane.YES_OPTION) {
+            NganhHoc nganh = getNganhHocDangChon();
+            this.model.delete(nganh);
+            modelTable.removeRow(indexRow);
+        }
+    }
+
+    public void thucHienThemNganh() {
+        String maNganh = this.textField_MaNganh.getText() + "";
+        String tenNganh = this.textField_TenNganh.getText();
+        String maTruong = this.textField_MaTruong.getText();
+        String tenTruong = this.textField_TenTruong.getText();
+        String diaChi = this.textField_DiaChi.getText();
+        TruongDH truong = new TruongDH(maTruong, tenTruong, diaChi);
+        long hocPhi = Long.valueOf(this.textField_HocPhi.getText());
+        double diemChuan = Double.valueOf(this.textField_DiemChuan.getText());
+
+        NganhHoc nganh = new NganhHoc(maNganh, tenNganh, truong, hocPhi, diemChuan);
+        this.themHoacCapNhatNganhHoc(nganh);
+    }
+
+    public void thucHienTim() {
+        int indexTruong = this.comboBox_TenTruongTimKiem.getSelectedIndex() - 1;
+        String maNganhDaChon = this.textField_MaNganhDaChon.getText();
+        String tenTruongDaChon = (String) comboBox_TenTruongTimKiem.getSelectedItem();
+        DefaultTableModel modelTable = (DefaultTableModel) table.getModel();
+        int soLuongDong = modelTable.getRowCount();
+        boolean tonTai = false;
+        if(indexTruong >= 0) {
+            for(int i = 0; i < soLuongDong; i++) {
+                String tenTruong = modelTable.getValueAt(i, 4) + "";
+                if(tenTruong.equals(tenTruongDaChon)) {
+                    tonTai = true;
+                }
+
+            }
+        }
+        if(maNganhDaChon.length() > 0) {
+            for(int i = 0; i < soLuongDong; i++) {
+                String maNganh = modelTable.getValueAt(i, 0) + "";
+                if(maNganh.equals(maNganhDaChon)) {
+                    tonTai = true;
+                }
+            }
+        }
+        if(!tonTai) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy ngành học", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public void thucHienHuyTimKiem() {
+
     }
 }
 
