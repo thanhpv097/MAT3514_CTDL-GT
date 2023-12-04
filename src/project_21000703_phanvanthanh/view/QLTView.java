@@ -32,13 +32,15 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 
 public class QLTView extends JFrame {
     public JComboBox comboBox_TenTruongTimKiem ;
     public JPanel contentPane;
     public QLTModel model;
-    public JTextField textField_MaNganhDaChon;
+    public JTextField textField_TenNganhDaChon;
     public JTable table;
     public JTextField textField_MaNganh;
     public JTextField textField_TenNganh;
@@ -113,16 +115,16 @@ public class QLTView extends JFrame {
         lable_TenTruong.setBounds(10, 57, 89, 34);
         contentPane.add(lable_TenTruong);
 
-        JLabel lable_MaNganh = new JLabel("Mã Ngành");
-        lable_MaNganh.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        lable_MaNganh.setBounds(390, 57, 78, 34);
-        contentPane.add(lable_MaNganh);
+        JLabel lable_TenNganhDaChon = new JLabel("Tên Ngành");
+        lable_TenNganhDaChon.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        lable_TenNganhDaChon.setBounds(390, 57, 89, 34);
+        contentPane.add(lable_TenNganhDaChon);
 
-        textField_MaNganhDaChon = new JTextField();
-        textField_MaNganhDaChon.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        textField_MaNganhDaChon.setBounds(508, 57, 158, 35);
-        contentPane.add(textField_MaNganhDaChon);
-        textField_MaNganhDaChon.setColumns(10);
+        textField_TenNganhDaChon = new JTextField();
+        textField_TenNganhDaChon.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        textField_TenNganhDaChon.setBounds(508, 57, 158, 35);
+        contentPane.add(textField_TenNganhDaChon);
+        textField_TenNganhDaChon.setColumns(10);
 
         JButton button_TimKiem = new JButton("Tìm Kiếm");
         button_TimKiem.addActionListener(action);
@@ -131,14 +133,11 @@ public class QLTView extends JFrame {
             }
         });
         button_TimKiem.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        button_TimKiem.setBounds(702, 57, 118, 35);
+        button_TimKiem.setBounds(686, 57, 118, 35);
         contentPane.add(button_TimKiem);
 
         comboBox_TenTruongTimKiem = new JComboBox();
         comboBox_TenTruongTimKiem.addItem("");
-        for(NganhHoc nganh : this.model.getDsNganhHoc()) {
-            comboBox_TenTruongTimKiem.addItem(nganh.getTruong().getTenTruong());
-        }
         comboBox_TenTruongTimKiem.setForeground(Color.GRAY);
         comboBox_TenTruongTimKiem.setFont(new Font("Tahoma", Font.PLAIN, 17));
         contentPane.add(comboBox_TenTruongTimKiem);
@@ -299,7 +298,7 @@ public class QLTView extends JFrame {
         JButton button_HuyTimKiem = new JButton("Hủy Tìm Kiếm");
         button_HuyTimKiem.addActionListener(action);
         button_HuyTimKiem.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        button_HuyTimKiem.setBounds(838, 57, 137, 35);
+        button_HuyTimKiem.setBounds(814, 57, 161, 35);
         contentPane.add(button_HuyTimKiem);
     }
     public void xoaFrom() {
@@ -340,7 +339,6 @@ public class QLTView extends JFrame {
 
                 }
             }
-
         }
     }
     public NganhHoc getNganhHocDangChon() {
@@ -390,42 +388,86 @@ public class QLTView extends JFrame {
         TruongDH truong = new TruongDH(maTruong, tenTruong, diaChi);
         long hocPhi = Long.valueOf(this.textField_HocPhi.getText());
         double diemChuan = Double.valueOf(this.textField_DiemChuan.getText());
-
         NganhHoc nganh = new NganhHoc(maNganh, tenNganh, truong, hocPhi, diemChuan);
+        comboBox_TenTruongTimKiem.addItem(nganh.getTruong().getTenTruong());
         this.themHoacCapNhatNganhHoc(nganh);
+
     }
 
     public void thucHienTim() {
-        int indexTruong = this.comboBox_TenTruongTimKiem.getSelectedIndex() - 1;
-        String maNganhDaChon = this.textField_MaNganhDaChon.getText();
+        boolean indexTruong = this.comboBox_TenTruongTimKiem.getSelectedIndex() - 1 >= 0;
+        String tenNganhDaChon = this.textField_TenNganhDaChon.getText();
+        boolean tenNganhDaChonB = tenNganhDaChon.length() > 0;
         String tenTruongDaChon = (String) comboBox_TenTruongTimKiem.getSelectedItem();
         DefaultTableModel modelTable = (DefaultTableModel) table.getModel();
-        int soLuongDong = modelTable.getRowCount();
+        HashMap<String, NganhHoc> mapNganhTonTai = new HashMap<String, NganhHoc>();
         boolean tonTai = false;
-        if(indexTruong >= 0) {
-            for(int i = 0; i < soLuongDong; i++) {
-                String tenTruong = modelTable.getValueAt(i, 4) + "";
-                if(tenTruong.equals(tenTruongDaChon)) {
+        if(indexTruong && !tenNganhDaChonB) {
+            for(int i = 0; i < this.model.getDsNganhHoc().size(); i++) {
+                if(tenTruongDaChon.equals(this.model.getDsNganhHoc().get(i).getTruong().getTenTruong())) {
+                    mapNganhTonTai.put(this.model.getDsNganhHoc().get(i).getMaNganh(), this.model.getDsNganhHoc().get(i));
                     tonTai = true;
                 }
-
             }
         }
-        if(maNganhDaChon.length() > 0) {
-            for(int i = 0; i < soLuongDong; i++) {
-                String maNganh = modelTable.getValueAt(i, 0) + "";
-                if(maNganh.equals(maNganhDaChon)) {
+        if(!indexTruong && tenNganhDaChonB) {
+            for(int i = 0; i < this.model.getDsNganhHoc().size(); i++) {
+                if(tenNganhDaChon.equals(this.model.getDsNganhHoc().get(i).getTenNganh())) {
+                    mapNganhTonTai.put(this.model.getDsNganhHoc().get(i).getMaNganh(), this.model.getDsNganhHoc().get(i));
+                    tonTai = true;
+                }
+            }
+        }
+        if(indexTruong && tenNganhDaChonB) {
+            for(int i = 0; i < this.model.getDsNganhHoc().size(); i++) {
+                if(tenTruongDaChon.equals(
+                        this.model.getDsNganhHoc().get(i).getTruong().getTenTruong()) &&
+                        tenNganhDaChon.equals(this.model.getDsNganhHoc().get(i).getTenNganh())) {
+                    mapNganhTonTai.put(this.model.getDsNganhHoc().get(i).getMaNganh(), this.model.getDsNganhHoc().get(i));
                     tonTai = true;
                 }
             }
         }
         if(!tonTai) {
             JOptionPane.showMessageDialog(this, "Không tìm thấy ngành học", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } else if(tonTai){
+            modelTable.setRowCount(0);
+            themNganhVaoBang(mapNganhTonTai);
         }
     }
+    public void themNganhVaoBang(ArrayList<NganhHoc> dsNganhHoc) {
+        DefaultTableModel modelTable = (DefaultTableModel) table.getModel();
+        for(int i = 0; i < dsNganhHoc.size(); i++) {
+            modelTable.addRow(new Object[] {
+                    dsNganhHoc.get(i).getMaNganh(),
+                    dsNganhHoc.get(i).getTenNganh(),
+                    dsNganhHoc.get(i).getDiemChuan() + "",
+                    dsNganhHoc.get(i).getTruong().getMaTruong() + "",
+                    dsNganhHoc.get(i).getTruong().getTenTruong() + "",
+                    dsNganhHoc.get(i).getTruong().getDiaChi() + "",
+                    dsNganhHoc.get(i).getHocPhi() + ""});
+        }
+    }
+    public void themNganhVaoBang(HashMap<String, NganhHoc> mapNganhTonTai) {
+        DefaultTableModel modelTable = (DefaultTableModel) table.getModel();
 
+        for (Map.Entry<String, NganhHoc> entry : mapNganhTonTai.entrySet()) {
+            NganhHoc nganh = entry.getValue();
+            modelTable.addRow(new Object[] {
+                    nganh.getMaNganh(),
+                    nganh.getTenNganh(),
+                    nganh.getDiemChuan() + "",
+                    nganh.getTruong().getMaTruong() + "",
+                    nganh.getTruong().getTenTruong() + "",
+                    nganh.getTruong().getDiaChi() + "",
+                    nganh.getHocPhi() + ""
+            });
+        }
+    }
     public void thucHienHuyTimKiem() {
-
+        DefaultTableModel modelTable = (DefaultTableModel) table.getModel();
+        modelTable.setRowCount(0);
+        themNganhVaoBang(this.model.getDsNganhHoc());
     }
 }
 
